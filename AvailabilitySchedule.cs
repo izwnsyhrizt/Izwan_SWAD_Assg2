@@ -21,7 +21,6 @@ public class AvailabilitySchedule
         if (IsValidDate(startDateTime, endDateTime))
         {
             timePeriods.Add((startDateTime, endDateTime));
-            Console.WriteLine("Time period added successfully.");
         }
         else
         {

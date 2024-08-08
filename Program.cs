@@ -88,9 +88,8 @@ class Program
             car.AvailabilitySchedule.AddTimePeriod(startDateTime, endDateTime);
             car.Bookings.Add(booking);
 
-            Console.WriteLine($"Your booking is confirmed!");
-            Console.WriteLine();
-            Console.WriteLine($"Renter Details:\n Name: {renter.Name}\n Contact: {renter.Contact}");
+            Console.WriteLine($"\nYour booking is confirmed!");
+            Console.WriteLine($"\n--- Booking Details ---\nRenter Details:\n Name: {renter.Name}\n Contact: {renter.Contact}");
             Console.WriteLine($"Car Details:\n Make: {car.Make}\n Model: {car.Model}\n Year: {car.Year}\n Rate: ${car.CurrentRate}/day");
             Console.WriteLine($"Booking Details:\n Start Date and Time: {booking.StartDateTime:yyyy-MM-dd HH:mm}\n End Date and Time: {booking.EndDateTime:yyyy-MM-dd HH:mm}\n Pickup Option: {booking.PickupOption}\n Total Cost: ${booking.TotalCost}");
         }
