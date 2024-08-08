@@ -14,8 +14,11 @@ class Program
         Renter renter = new Renter(driversLicenseNo: "D1234567", userId: 1, name: "John Doe",
             contact: 1234567890, dob: new DateTime(1985, 5, 20), address: "561 Choa Chu Kang North 6");
 
+        // Create iCarStation
+        ICarStation station1 = new ICarStation(1, "iCar Station Jurong", "123 Jurong West", "66666666");
+
         // Create Car
-        Car car1 = new Car(1, "Honda", "Civic", 2023, "iCar Station Clementi", 50.0);
+        Car car1 = new Car(1, "Honda", "Civic", 2023, station1, 50.0);
 
         // Initialize AvailabilitySchedule and add time periods
         var availabilitySchedule = new AvailabilitySchedule(car1.CarId);
@@ -31,6 +34,7 @@ class Program
             Console.WriteLine("1. Book Car");
             Console.WriteLine("2. Exit");
             Console.Write("Choose an option: ");
+
 
             int option;
             while (!int.TryParse(Console.ReadLine(), out option) || option < 1 || option > 2)
@@ -54,10 +58,10 @@ class Program
     // Method to handle the car booking process
     static void BookCar(Car car, Renter renter)
     {
-        Console.WriteLine("Taken timeslots:");
+        Console.WriteLine("\nTaken timeslots:\n");
         foreach (var period in car.AvailabilitySchedule.GetTimePeriods())
         {
-            Console.WriteLine($"From {period.StartDateTime:yyyy-MM-dd HH:mm} to {period.EndDateTime:yyyy-MM-dd HH:mm}");
+            Console.WriteLine($"{period.StartDateTime:yyyy-MM-dd HH:mm} - {period.EndDateTime:yyyy-MM-dd HH:mm}");
         }
 
         DateTime startDateTime;
@@ -77,7 +81,7 @@ class Program
             Console.WriteLine("Invalid booking period. Both dates must be in the future.");
             return;
         }
-
+        
         if (IsValidBooking(car, startDateTime, endDateTime))
         {
             double rentalRate = car.CurrentRate;
@@ -90,9 +94,9 @@ class Program
 
             Console.WriteLine("\nYour booking is confirmed!");
             Console.WriteLine("\n--- Booking Details ---");
-            Console.WriteLine($"Renter Details:\n Name: {renter.Name}\n Contact: {renter.Contact}");
-            Console.WriteLine($"Car Details:\n Make: {car.Make}\n Model: {car.Model}\n Year: {car.Year}\n Rate: ${car.CurrentRate}/day");
-            Console.WriteLine($"Booking Details:\n Start Date and Time: {booking.StartDateTime:yyyy-MM-dd HH:mm}\n End Date and Time: {booking.EndDateTime:yyyy-MM-dd HH:mm}\n Pickup Option: {booking.PickupOption}\n Total Cost: ${booking.TotalCost}");
+            Console.WriteLine($"\nRenter Details:\n Name: {renter.Name}\n Contact: {renter.Contact}");
+            Console.WriteLine($"\nCar Details:\n Make: {car.Make}\n Model: {car.Model}\n Year: {car.Year}\n Rate: ${car.CurrentRate}/day");
+            Console.WriteLine($"\nBooking Details:\n Start Date and Time: {booking.StartDateTime:yyyy-MM-dd HH:mm}\n End Date and Time: {booking.EndDateTime:yyyy-MM-dd HH:mm}\n Pickup Option: {booking.PickupOption}\n Total Cost: ${booking.TotalCost}");
 
             // Display address or pickup location based on the pickup option
             if (pickupOption.ToLower() == "delivery")
@@ -101,7 +105,7 @@ class Program
             }
             else
             {
-                Console.WriteLine($"Pickup Location: {car.ICarStation}");
+                Console.WriteLine($"Pickup Location: {car.ICarStation.name}, {car.ICarStation.address}");
             }
         }
         else
@@ -118,7 +122,7 @@ class Program
         string dateTimeFormat = "yyyy-MM-dd HH:mm";
 
         // Prompt user to enter start date and time
-        Console.Write($"Enter start date and time ({dateTimeFormat}): ");
+        Console.Write($"\nEnter start date and time ({dateTimeFormat}): ");
         while (!DateTime.TryParseExact(Console.ReadLine(), dateTimeFormat,
                                        System.Globalization.CultureInfo.InvariantCulture,
                                        System.Globalization.DateTimeStyles.None,
