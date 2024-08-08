@@ -15,7 +15,7 @@ class Program
             contact: 1234567890, dob: new DateTime(1985, 5, 20), address: "561 Choa Chu Kang North 6");
 
         // Create Car
-        Car car1 = new Car(1, "Honda", "Civic", 2023, 50.0);
+        Car car1 = new Car(1, "Honda", "Civic", 2023, "iCar Station Clementi", 50.0);
 
         // Initialize AvailabilitySchedule and add time periods
         var availabilitySchedule = new AvailabilitySchedule(car1.CarId);
@@ -88,16 +88,28 @@ class Program
             car.AvailabilitySchedule.AddTimePeriod(startDateTime, endDateTime);
             car.Bookings.Add(booking);
 
-            Console.WriteLine($"\nYour booking is confirmed!");
-            Console.WriteLine($"\n--- Booking Details ---\nRenter Details:\n Name: {renter.Name}\n Contact: {renter.Contact}");
+            Console.WriteLine("\nYour booking is confirmed!");
+            Console.WriteLine("\n--- Booking Details ---");
+            Console.WriteLine($"Renter Details:\n Name: {renter.Name}\n Contact: {renter.Contact}");
             Console.WriteLine($"Car Details:\n Make: {car.Make}\n Model: {car.Model}\n Year: {car.Year}\n Rate: ${car.CurrentRate}/day");
             Console.WriteLine($"Booking Details:\n Start Date and Time: {booking.StartDateTime:yyyy-MM-dd HH:mm}\n End Date and Time: {booking.EndDateTime:yyyy-MM-dd HH:mm}\n Pickup Option: {booking.PickupOption}\n Total Cost: ${booking.TotalCost}");
+
+            // Display address or pickup location based on the pickup option
+            if (pickupOption.ToLower() == "delivery")
+            {
+                Console.WriteLine($"Delivery Address: {renter.Address}");
+            }
+            else
+            {
+                Console.WriteLine($"Pickup Location: {car.ICarStation}");
+            }
         }
         else
         {
             Console.WriteLine("Invalid booking period. The dates must not overlap with existing bookings.");
         }
     }
+
 
 
 

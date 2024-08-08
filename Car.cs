@@ -11,6 +11,8 @@ public class Car
     public string Make { get; set; }
     public string Model { get; set; }
     public int Year { get; set; }
+    public string ICarStation { get; set; }
+
     public AvailabilitySchedule AvailabilitySchedule { get; set; }
     public RentalRate RentalRate { get; set; }
     public List<Booking> Bookings { get; set; }
@@ -24,12 +26,13 @@ public class Car
     // Static list to hold all car instances
     private static List<Car> cars = new List<Car>();
 
-    public Car(int carId, string make, string model, int year, double rentalRate)
+    public Car(int carId, string make, string model, int year, string iCarStation, double rentalRate)
     {
         this.CarId = carId;
         this.Make = make;
         this.Model = model;
         this.Year = year;
+        this.ICarStation = iCarStation;
         this.AvailabilitySchedule = new AvailabilitySchedule(carId);
         this.RentalRate = new RentalRate(rentalRate); // Initialize RentalRate with the rate
         this.Bookings = new List<Booking>();
