@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics.Metrics;
 using System.Runtime.ConstrainedExecution;
 using iCarRentalSystem;
@@ -20,9 +21,8 @@ class Program
         // Create Car
         Car car1 = new Car(1, "Honda", "Civic", 2023, station1, 50.0);
 
-        // Initialize AvailabilitySchedule and add time periods
+        // Create AvailabilitySchedule
         var availabilitySchedule = new AvailabilitySchedule(car1.CarId);
-        //availabilitySchedule.AddTimePeriod(new DateTime(2024, 8, 1, 10, 0, 0), new DateTime(2024, 8, 7, 18, 0, 0));
 
         // Assign the schedule to the car
         car1.AvailabilitySchedule = availabilitySchedule;
@@ -34,7 +34,6 @@ class Program
             Console.WriteLine("1. Book Car");
             Console.WriteLine("2. Exit");
             Console.Write("Choose an option: ");
-
 
             int option;
             while (!int.TryParse(Console.ReadLine(), out option) || option < 1 || option > 2)
@@ -49,7 +48,7 @@ class Program
                     BookCar(car1, renter);
                     break;
                 case 2:
-                    Console.WriteLine("Exiting the system. Goodbye!");
+                    Console.WriteLine("Exiting system. Goodbye!");
                     return;
             }
         }
@@ -82,23 +81,29 @@ class Program
             return;
         }
         
+        // Call method to check if booking is valid
         if (IsValidBooking(car, startDateTime, endDateTime))
         {
+            // Get rental rate and call method to calc total cost
             double rentalRate = car.CurrentRate;
             double totalCost = CalculateTotalCost(startDateTime, endDateTime, rentalRate);
 
+            //Create new Booking
             Booking booking = new Booking(1, startDateTime, endDateTime, pickupOption, (int)totalCost);
 
+            //Add time period to avai-sched
             car.AvailabilitySchedule.AddTimePeriod(startDateTime, endDateTime);
+            //Add booking to car's booking list
             car.Bookings.Add(booking);
 
+            //Display booking details
             Console.WriteLine("\nYour booking is confirmed!");
             Console.WriteLine("\n--- Booking Details ---");
             Console.WriteLine($"\nRenter Details:\n Name: {renter.Name}\n Contact: {renter.Contact}");
             Console.WriteLine($"\nCar Details:\n Make: {car.Make}\n Model: {car.Model}\n Year: {car.Year}\n Rate: ${car.CurrentRate}/day");
             Console.WriteLine($"\nBooking Details:\n Start Date and Time: {booking.StartDateTime:yyyy-MM-dd HH:mm}\n End Date and Time: {booking.EndDateTime:yyyy-MM-dd HH:mm}\n Pickup Option: {booking.PickupOption}\n Total Cost: ${booking.TotalCost}");
 
-            // Display address or pickup location based on the pickup option
+            // Display address or pickup location based on pickupOption
             if (pickupOption.ToLower() == "delivery")
             {
                 Console.WriteLine($"Delivery Address: {renter.Address}");
@@ -114,9 +119,7 @@ class Program
         }
     }
 
-
-
-
+     // Method for renter to enter booking details   
     private static void EnterBookingDetails(out DateTime startDateTime, out DateTime endDateTime, out string pickupOption)
     {
         string dateTimeFormat = "yyyy-MM-dd HH:mm";
@@ -156,10 +159,10 @@ class Program
             // Check if the proposed booking falls within an existing time period
             if (startDateTime < period.EndDateTime && endDateTime > period.StartDateTime)
             {
-                return false; // Booking is invalid if it overlaps with any existing time period
+                return false; // Invalid if overlaps with any existing time period
             }
         }
-        return true; // Booking is valid if it does not overlap with any existing time periods
+        return true; // Valid if it does not overlap with any existing time periods
     }
 
     // Method to calculate the total cost of the booking
