@@ -8,10 +8,13 @@ namespace iCarRentalSystem
 {
     public class RentalRate
     {
+        public int CarId { get; set; } // Link RentalRate to Car
         public double Rate { get; set; }
 
-        public RentalRate(double rate)
+        public RentalRate(int carId, double rate)
         {
+            CarId = carId;
+
             if (ValidateRate(rate))
             {
                 Rate = rate;
@@ -38,5 +41,4 @@ namespace iCarRentalSystem
                 throw new ArgumentException("Invalid rate. Rate must be greater than 0.");
             }
         }
-    }
-}
+    } }

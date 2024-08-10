@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using iCarRentalSystem;
+﻿using iCarRentalSystem;
 
 public class Car
 {
@@ -11,46 +6,61 @@ public class Car
     public string Make { get; set; }
     public string Model { get; set; }
     public int Year { get; set; }
-    public ICarStation ICarStation { get; set; }
-
-    public AvailabilitySchedule AvailabilitySchedule { get; set; }
+    public double Mileage { get; set; }
+    public string Insurance { get; set; }
+    public string Photos { get; set; }
     public RentalRate RentalRate { get; set; }
-    public List<Booking> Bookings { get; set; }
-    public double CurrentRate
+    public AvailabilitySchedule AvailabilitySchedule { get; set; }
+
+    public Car(int carId, string make, string model, int year, double mileage, string insurance, string photos)
     {
-        get { return RentalRate?.Rate ?? 0; } // Retrieve the rate from RentalRate or return 0 if RentalRate is null
-        set { RentalRate = new RentalRate(value); } // Update the rate by creating a new RentalRate object
+        CarId = carId;
+        Make = make;
+        Model = model;
+        Year = year;
+        Mileage = mileage;
+        Insurance = insurance;
+        Photos = photos;
+        RentalRate = null; // Initialize as null
+        AvailabilitySchedule = null; // Initialize as null
     }
 
-    // Static list to hold all car instances
-    private static List<Car> cars = new List<Car>();
-
-    public Car(int carId, string make, string model, int year, ICarStation iCarStation, double rentalRate)
+    public void SetRentalRate(RentalRate rentalRate)
     {
-        this.CarId = carId;
-        this.Make = make;
-        this.Model = model;
-        this.Year = year;
-        this.ICarStation = iCarStation;
-        this.AvailabilitySchedule = new AvailabilitySchedule(carId);
-        this.RentalRate = new RentalRate(rentalRate); // Initialize RentalRate with the rate
-        this.Bookings = new List<Booking>();
+        if (rentalRate.CarId == this.CarId)
+        {
+            RentalRate = rentalRate;
+        }
+        else
+        {
+            Console.WriteLine("Error: RentalRate's CarId does not match this car.");
+        }
     }
 
-    public List<double> GetCurrentRates()
+    public void SetAvailabilitySchedule(AvailabilitySchedule schedule)
     {
-        // Return a list with the current rate
-        return new List<double> { CurrentRate };
+        if (schedule.CarId == this.CarId)
+        {
+            AvailabilitySchedule = schedule;
+        }
+        else
+        {
+            Console.WriteLine("Error: Schedule's CarId does not match this car.");
+        }
     }
 
-    public List<AvailabilitySchedule> showAvailabilitySchedule()
+    public RentalRate getRentalRate()
     {
-        // Return the list of availability schedules
-        return AvailabilitySchedules;
+        return RentalRate;
+    }
+
+    public AvailabilitySchedule getAvailabilitySchedule()
+    {
+        return AvailabilitySchedule;
     }
 
     public override string ToString()
     {
-        return $"Car ID: {CarId}, Make: {Make}, Model: {Model}, Year: {Year}, Rate: {RentalRate?.Rate}, Availability: {AvailabilitySchedule}";
+        return $"Car ID: {CarId}, Make: {Make}, Model: {Model}, Year: {Year}, Mileage: {Mileage}, Insurance: {Insurance}, Photos: {Photos}";
     }
 }

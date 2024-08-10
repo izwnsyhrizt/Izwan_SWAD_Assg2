@@ -4,7 +4,6 @@ using System.Linq;
 using System.Runtime.ConstrainedExecution;
 using System.Text;
 using System.Threading.Tasks;
-
 namespace iCarRentalSystem
 {
     public class Booking
@@ -18,13 +17,15 @@ namespace iCarRentalSystem
         private Car car;
         private Renter renter;
 
-        public Booking(int bookingId, DateTime startDateTime, DateTime endDateTime, string pickupOption, int totalCost)
+        public Booking(int bookingId, DateTime startDateTime, DateTime endDateTime, string pickupOption, int totalCost, Car car, Renter renter)
         {
             this.bookingId = bookingId;
             this.startDateTime = startDateTime;
             this.endDateTime = endDateTime;
             this.pickupOption = pickupOption;
             this.totalCost = totalCost;
+            this.car = car;
+            this.renter = renter;
         }
 
         public int BookingId
@@ -72,8 +73,7 @@ namespace iCarRentalSystem
         public override string ToString()
         {
             return $"Booking ID: {bookingId}, Start: {startDateTime}, End: {endDateTime}, " +
-                   $"Pickup Option: {pickupOption}, Total Cost: {totalCost}, Car: {car.CarId}, Renter: {renter.Name}";
+                   $"Pickup Option: {pickupOption}, Total Cost: {totalCost}, Car ID: {car?.CarId}, Renter: {renter?.Name}";
         }
-
     }
 }
