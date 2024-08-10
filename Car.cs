@@ -21,7 +21,6 @@ public class Car
         get { return RentalRate?.Rate ?? 0; } // Retrieve the rate from RentalRate or return 0 if RentalRate is null
         set { RentalRate = new RentalRate(value); } // Update the rate by creating a new RentalRate object
     }
-    public List<AvailabilitySchedule> AvailabilitySchedules { get; set; } = new List<AvailabilitySchedule>();
 
     // Static list to hold all car instances
     private static List<Car> cars = new List<Car>();
@@ -36,7 +35,6 @@ public class Car
         this.AvailabilitySchedule = new AvailabilitySchedule(carId);
         this.RentalRate = new RentalRate(rentalRate); // Initialize RentalRate with the rate
         this.Bookings = new List<Booking>();
-        cars.Add(this); // Add new car to static list
     }
 
     public List<double> GetCurrentRates()
@@ -45,7 +43,7 @@ public class Car
         return new List<double> { CurrentRate };
     }
 
-    public List<AvailabilitySchedule> GetCurrentSchedules()
+    public List<AvailabilitySchedule> showAvailabilitySchedule()
     {
         // Return the list of availability schedules
         return AvailabilitySchedules;

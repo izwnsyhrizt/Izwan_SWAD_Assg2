@@ -55,7 +55,7 @@ class Program
     }
 
     // Method to handle the car booking process
-    static void BookCar(Car car, Renter renter)
+    static void bookCar(Car car, Renter renter)
     {
         Console.WriteLine("\nTaken timeslots:\n");
         foreach (var period in car.AvailabilitySchedule.GetTimePeriods())
@@ -67,7 +67,7 @@ class Program
         DateTime endDateTime;
         string pickupOption;
 
-        EnterBookingDetails(out startDateTime, out endDateTime, out pickupOption);
+        enterBookingDetails(out startDateTime, out endDateTime, out pickupOption);
 
         if (startDateTime >= endDateTime)
         {
@@ -82,17 +82,17 @@ class Program
         }
         
         // Call method to check if booking is valid
-        if (IsValidBooking(car, startDateTime, endDateTime))
+        if (isValidBooking(car, startDateTime, endDateTime))
         {
             // Get rental rate and call method to calc total cost
             double rentalRate = car.CurrentRate;
-            double totalCost = CalculateTotalCost(startDateTime, endDateTime, rentalRate);
+            double totalCost = calculateTotalCost(startDateTime, endDateTime, rentalRate);
 
             //Create new Booking
             Booking booking = new Booking(1, startDateTime, endDateTime, pickupOption, (int)totalCost);
 
             //Add time period to avai-sched
-            car.AvailabilitySchedule.AddTimePeriod(startDateTime, endDateTime);
+            car.AvailabilitySchedule.addTimePeriod(startDateTime, endDateTime);
             //Add booking to car's booking list
             car.Bookings.Add(booking);
 
@@ -120,7 +120,7 @@ class Program
     }
 
      // Method for renter to enter booking details   
-    private static void EnterBookingDetails(out DateTime startDateTime, out DateTime endDateTime, out string pickupOption)
+    private static void enterBookingDetails(out DateTime startDateTime, out DateTime endDateTime, out string pickupOption)
     {
         string dateTimeFormat = "yyyy-MM-dd HH:mm";
 
@@ -152,7 +152,7 @@ class Program
     }
 
     // Method to check if the booking period is valid
-    private static bool IsValidBooking(Car car, DateTime startDateTime, DateTime endDateTime)
+    private static bool isValidBooking(Car car, DateTime startDateTime, DateTime endDateTime)
     {
         foreach (var period in car.AvailabilitySchedule.GetTimePeriods())
         {
@@ -166,7 +166,7 @@ class Program
     }
 
     // Method to calculate the total cost of the booking
-    private static double CalculateTotalCost(DateTime startDateTime, DateTime endDateTime, double rate)
+    private static double calculateTotalCost(DateTime startDateTime, DateTime endDateTime, double rate)
     {
         // Calculate duration of booking
         TimeSpan duration = endDateTime - startDateTime;

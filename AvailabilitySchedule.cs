@@ -38,8 +38,8 @@ public class AvailabilitySchedule
         return startDateTime < endDateTime && startDateTime > DateTime.Now && endDateTime > DateTime.Now;
     }
 
-    public DateTime StartDateTime { get; private set; }
-    public DateTime EndDateTime { get; private set; }
+    public DateTime StartDateTime { get; set; }
+    public DateTime EndDateTime { get; set; }
 
     public AvailabilitySchedule(DateTime startDateTime, DateTime endDateTime)
     {
