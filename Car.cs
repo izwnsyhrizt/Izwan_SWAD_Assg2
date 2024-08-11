@@ -1,66 +1,88 @@
-﻿using iCarRentalSystem;
+﻿using System;
+using System.Collections.Generic;
 
-public class Car
+namespace iCarRentalSystem
 {
-    public int CarId { get; set; }
-    public string Make { get; set; }
-    public string Model { get; set; }
-    public int Year { get; set; }
-    public double Mileage { get; set; }
-    public string Insurance { get; set; }
-    public string Photos { get; set; }
-    public RentalRate RentalRate { get; set; }
-    public AvailabilitySchedule AvailabilitySchedule { get; set; }
-
-    public Car(int carId, string make, string model, int year, double mileage, string insurance, string photos)
+    public class Car
     {
-        CarId = carId;
-        Make = make;
-        Model = model;
-        Year = year;
-        Mileage = mileage;
-        Insurance = insurance;
-        Photos = photos;
-        RentalRate = null; // Initialize as null
-        AvailabilitySchedule = null; // Initialize as null
-    }
+        public int CarId { get; set; }
+        public string Make { get; set; }
+        public string Model { get; set; }
+        public int Year { get; set; }
+        public double Mileage { get; set; }
+        public string Insurance { get; set; }
+        public string PhotoPath { get; set; }
+        public ICarStation iCarStation { get; set; }
+        public RentalRate rentalRate;
+        public AvailabilitySchedule availabilitySchedule;
+        public List<Booking> bookings; // Added bookings list
 
-    public void SetRentalRate(RentalRate rentalRate)
-    {
-        if (rentalRate.CarId == this.CarId)
+        public Car(int carId, string make, string model, int year, double mileage, string insurance, string photoPath)
         {
-            RentalRate = rentalRate;
+            CarId = carId;
+            Make = make;
+            Model = model;
+            Year = year;
+            Mileage = mileage;
+            Insurance = insurance;
+            PhotoPath = photoPath;
+            iCarStation = new ICarStation(1, "iCar Jurong", "Jurong Street 5", 1234567890);
+            bookings = new List<Booking>(); // Initialize bookings list
         }
-        else
+
+        public void SetRentalRate(RentalRate rentalRate)
         {
-            Console.WriteLine("Error: RentalRate's CarId does not match this car.");
+            if (rentalRate.CarId == this.CarId)
+            {
+                this.rentalRate = rentalRate;
+            }
+            else
+            {
+                Console.WriteLine("Error: RentalRate's CarId does not match this car.");
+            }
         }
-    }
 
-    public void SetAvailabilitySchedule(AvailabilitySchedule schedule)
-    {
-        if (schedule.CarId == this.CarId)
+        public void SetAvailabilitySchedule(AvailabilitySchedule schedule)
         {
-            AvailabilitySchedule = schedule;
+            if (schedule.CarId == this.CarId)
+            {
+                this.availabilitySchedule = schedule;
+            }
+            else
+            {
+                Console.WriteLine("Error: Schedule's CarId does not match this car.");
+            }
         }
-        else
+
+        public RentalRate getRentalRate()
         {
-            Console.WriteLine("Error: Schedule's CarId does not match this car.");
+            return rentalRate;
         }
-    }
 
-    public RentalRate getRentalRate()
-    {
-        return RentalRate;
-    }
+        public AvailabilitySchedule getAvailabilitySchedule()
+        {
+            return availabilitySchedule;
+        }
 
-    public AvailabilitySchedule getAvailabilitySchedule()
-    {
-        return AvailabilitySchedule;
-    }
+        public void AddBooking(Booking booking)
+        {
+            if (booking == null)
+            {
+                Console.WriteLine("Error: Booking cannot be null.");
+                return;
+            }
 
-    public override string ToString()
-    {
-        return $"Car ID: {CarId}, Make: {Make}, Model: {Model}, Year: {Year}, Mileage: {Mileage}, Insurance: {Insurance}, Photos: {Photos}";
+            // Add the booking to the bookings list
+            bookings.Add(booking);
+        }
+
+        public List<Booking> getBookings()
+        {
+            return bookings;
+        }
+        public override string ToString()
+        {
+            return $"Car ID: {CarId}, Make: {Make}, Model: {Model}, Year: {Year}, Mileage: {Mileage}, Insurance: {Insurance}, Photo: {PhotoPath}";
+        }
     }
 }
